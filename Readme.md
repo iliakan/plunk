@@ -1,4 +1,4 @@
-A small utility to post current directory contents to http://plnkr.co/editor
+A small utility to post current directory contents to http://plnkr.co/edit
 
 Before usage, please:
 - Log in (sign up if needed) to http://github.com, and then

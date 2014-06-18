@@ -7,7 +7,7 @@ module.exports = function(module) {
 function makeLogger(path) {
 
 
-  if (path.match(/login/)) {
+  if (path.match(/DEBUG_PATH_HERE/)) {
 
     var transports = [
 

@@ -91,7 +91,7 @@ async.waterfall([
   _.partial(writePlunk, dir)
 ], function(err, plunk) {
   if (err) console.error(err);
-  else console.log("http://plnkr.co/editor/" + plunk.id);
+  else console.log("http://plnkr.co/edit/" + plunk.id);
 });
 
 

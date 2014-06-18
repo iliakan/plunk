@@ -18,7 +18,7 @@ function readPlunkContent(dir) {
     }
 
     var type = mime.lookup(file).split('/');
-    if (type[0] != 'text' && type[1] != 'json') {
+    if (type[0] != 'text' && type[1] != 'json' && type[1] != 'javascript') {
       hadErrors = true;
       console.error("Bad file extension: " + file);
     }

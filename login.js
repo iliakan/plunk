@@ -1,32 +1,29 @@
-var fs = require('fs');
-var config = require('config');
-var prompt = require('prompt');
+var log = require('./utils/log')(module);
+
+var config = require('./config');
+var readLine = require('./utils/readLine');
 var requestJson = require('./utils/requestJson');
 var async = require('async');
-var debug = require('debug')('plunk:index');
-var ApiError = require('./error').ApiError;
+var ApiError = require('./utils/error').ApiError;
 
 function readCredentials(callback) {
-  prompt.message = "";
-  prompt.delimiter = "";
+  log.debug("readCredentials");
 
-  prompt.start();
+  if (process.env.NODE_ENV == 'test' && process.env.GITHUB_USERNAME && process.env.GITHUB_PASSWORD) {
+    return callback(null, {
+      username: process.env.GITHUB_USERNAME,
+      password: process.env.GITHUB_PASSWORD
+    });
+  }
 
-  prompt.get([
-    {
-      name: 'username',
-      description: 'GitHub Login:',
-      required: true
-    },
-    {
-      name: 'password',
-      description: 'GitHub Password:',
-      hidden: true,
-      conform: function() {
-        return true;
+  async.series({
+      username: function(callback) {
+        readLine({message: 'GitHub Login: '}, callback);
+      },
+      password: function(callback) {
+        readLine({message: 'GitHub Password: ', hidden: true}, callback);
       }
-    }
-  ], callback);
+    }, callback);
 
 }
 
@@ -38,6 +35,7 @@ function readCredentials(callback) {
  * @param callback Calls callback(err, token)
  */
 function readGithubToken(auth, callback) {
+  log.debug("readGithubToken");
 
   async.waterfall([
     function(callback) {
@@ -68,7 +66,9 @@ function readGithubToken(auth, callback) {
 
 }
 
-function readPlnkrSessId(githubToken, callback) {
+function readPlnkrAuth(githubToken, callback) {
+  log.debug("readPlnkrAuth");
+
   var session;
   async.waterfall([
     function(callback) {
@@ -86,10 +86,10 @@ function readPlnkrSessId(githubToken, callback) {
     },
     function(response, auth, callback) {
       if (response.statusCode != 201) {
-        debug(response, auth);
+        log.debug(response, auth);
         return new ApiError("Incorrect response from " + session.user_url);
       }
-      callback(null, session.id);
+      callback(null, auth);
     }
   ], callback);
 }
@@ -98,10 +98,13 @@ function login(callback) {
   async.waterfall([
     readCredentials,
     readGithubToken,
-    readPlnkrSessId,
-    function(sessId, callback) {
-      config.set("sessId", sessId);
-      config.save(callback);
+    readPlnkrAuth,
+    function(auth, callback) {
+      config.set("auth", auth);
+      config.save(function(err) {
+        if (err) return callback(err);
+        callback(null, auth);
+      });
     }
   ], callback)
 }

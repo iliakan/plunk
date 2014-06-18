@@ -1,61 +1,53 @@
 /**
- * DISCLAIMER: Had to implement custom TTY reading,
+ * DISCLAIMER: Had to implement custom input reading,
+ *
  * because both node-read and node-prompt had bugs on Windows-8.1
  * E.g. every input letter was double-printed
  * (and I really need starred * input for passwords)
  *
  */
+var readline = require('readline');
 
+
+/**
+ * @param options object { message: what to ask?, hidden: true for passwords }
+ * @param callback function Calls callback(null, result), no errors no matter what
+ */
 function readLine(options, callback) {
+
+  var rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
   line = "";
 
   setup();
-
-  //process.openStdin();
-  process.stdout.write(options.query);
+  rl.question(options.message, function(result) {
+    tearDown();
+    callback(null, result);
+  });
 
   function onReadable() {
-    char = process.stdin.read();
-    if (char == null) return;
-    char = char + "";
-    switch (char) {
-      case "\n":
-      case "\r":
-      case "\u0004":
-        process.stdout.write("\n");
-        tearDown();
-        callback(null, line);
-        break;
-      default:
-        process.stdout.write(options.hidden ? '*' : char);
-        line += char;
-        break;
-    }
+    if (!options.hidden) return;
+    hideInput();
   }
 
-  function onClose() {
-    console.log("CLOSE");
-    tearDown();
-    callback(new Error("End of input"));
+  function hideInput() {
+    if (!rl.line) return; // happens on \n when the input is finished
+    process.stdout.write("\033[2K\033[200D" + options.message + Array(rl.line.length+1).join("*"));
   }
+
 
   function setup() {
-    process.on('SIGINT', onClose);
     process.stdin.on("readable", onReadable);
-    process.stdin.on("close", onClose);
-    process.stdin.setRawMode(true);
   }
 
   function tearDown() {
-    process.stdin.setRawMode(false);
-    process.removeListener("SIGINT", onClose);
     process.stdin.removeListener("readable", onReadable);
-    process.stdin.removeListener("close", onClose);
+    rl.close();
   }
-
 
 }
 
-readLine({ query: "password : ", hidden: true }, function(err, password) {
-  console.log("Your password : " + password);
-});
+module.exports = readLine;

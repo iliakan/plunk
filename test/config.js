@@ -1,5 +1,6 @@
 var fs = require('fs');
 var assert = require("assert");
+var config = require('../config');
 
 describe('config', function() {
   var file = "/tmp/plunk_config";
@@ -9,7 +10,6 @@ describe('config', function() {
       fs.unlinkSync(file);
     }
 
-    var config = require('config');
     config.use('file', {file: file});
 
     assert.equal(config.sessId, null);
@@ -22,6 +22,7 @@ describe('config', function() {
       assert.deepEqual(JSON.parse(fs.readFileSync(file)), {sessId: 123});
       fs.unlinkSync(file);
       done();
+
     });
   });
 

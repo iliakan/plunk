@@ -1,12 +1,12 @@
 var request = require('request');
-var debug = require('debug')('utils:requestJson');
-var ApiError = require('error').ApiError;
+var log = require('./log')(module);
+var ApiError = require('./error').ApiError;
 
-exports.get = makeMethod('get');
-exports.post = makeMethod('post');
-exports.del = makeMethod('del');
-exports.put = makeMethod('put');
-
+/**
+ * replacement for request.* methods, JSON-wrapper + User-Agent + Content-Type
+ * @param method
+ * @returns {Function}
+ */
 function makeMethod(method) {
 
   return function(options, callback) {
@@ -21,8 +21,13 @@ function makeMethod(method) {
     if (!options.json) options.json = true;
 
     return request[method](options, function(error, response, body) {
-      console.log(method, options, error, response.statusCode, body);
+      log.debug(method, options, error, response.statusCode, body);
       callback(error, response, body);
     });
   }
 }
+
+exports.get = makeMethod('get');
+exports.post = makeMethod('post');
+exports.del = makeMethod('del');
+exports.put = makeMethod('put');

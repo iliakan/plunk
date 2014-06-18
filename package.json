@@ -1,12 +1,34 @@
 {
   "name": "plunk",
-  "version": "0.0.1",
-  "description": "Submit to plnkr.co",
+  "version": "0.1.0",
+  "description": "Utility to submit current directory to plnkr.co",
+  "maintainers": [{
+    "name": "Ilya Kantor",
+    "email": "iliakan@gmail.com",
+    "web": "http://javascript.ru"
+  }],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iliakan/plunk.git"
+  },
+  "dependencies": {
+    "async": "*",
+    "home-dir": "*",
+    "request": "*",
+    "lodash": "*",
+    "mime": "*",
+    "nconf": "*",
+    "winston": "*"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*"
+  },
   "main": "index.js",
   "scripts": {
-    "start": "NODE_PATH=. node index",
-    "test": "NODE_PATH=. mocha"
+    "start": "node index",
+    "test": "NODE_ENV=test mocha -t 5000"
   },
   "author": "Ilya Kantor <iliakan@gmail.com> (http://javascript.ru/)",
-  "license": "ISC"
+  "license": "MIT"
 }

@@ -1,0 +1,99 @@
+#! /usr/bin/env node
+
+var login = require('../login');
+var config = require('../config');
+var async = require('async');
+var PlnkrApi = require('../plnkrApi').PlnkrApi;
+var readPlunkContent = require('../readPlunkContent');
+var writePlunk = require('../writePlunk');
+var _ = require('lodash');
+
+var dir = process.argv[2] || process.cwd();
+
+var plunkContent = readPlunkContent(dir);
+
+var api;
+
+if (!plunkContent) {
+  console.error("Exiting...");
+  process.exit(0);
+}
+
+function ensureAuth(callback) {
+  var auth = config.get('auth');
+  if (auth) return callback(null, auth);
+
+  login(callback);
+}
+
+function createApi(auth, callback) {
+  api = new PlnkrApi(auth);
+  callback(null);
+}
+
+function populateOldPlunk(callback) {
+  if (plunkContent.plunk.id) {
+    api.getPlunk(plunkContent.plunk.id, function(error, plunk) {
+      if (error) return callback(error);
+      plunkContent.plunk = plunk || {};
+      callback(null);
+    });
+  } else {
+    callback(null);
+  }
+}
+
+
+function createPlunk(callback) {
+
+  var form = {
+    description: '',
+    tags: [],
+    files: _.cloneDeep(plunkContent.files),
+    private: true
+  };
+
+  api.createPlunk(form, callback);
+}
+
+
+function updatePlunk(callback) {
+
+  var form = {
+    description: '',
+    tags: {},
+    files: _.cloneDeep(plunkContent.files)
+  };
+
+  // explicitly fileName:null for all removed files
+  for(var file in plunkContent.plunk.files) {
+    if (!form.files[file]) {
+      form.files[file] = null;
+    }
+  }
+
+  api.updatePlunk(plunkContent.plunk.id, form, callback);
+
+}
+
+
+async.waterfall([
+  ensureAuth,
+  createApi,
+  populateOldPlunk,
+  function(callback) {
+    if (plunkContent.plunk.id) {
+      updatePlunk(callback);
+    } else {
+      createPlunk(callback);
+    }
+  },
+  _.partial(writePlunk, dir)
+], function(err, plunk) {
+  if (err) console.error(err);
+  else console.log("http://plnkr.co/editor/" + plunk.id);
+});
+
+
+
+

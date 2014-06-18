@@ -9,7 +9,7 @@ var ApiError = require('./utils/error').ApiError;
 function readCredentials(callback) {
   log.debug("readCredentials");
 
-  if (process.env.NODE_ENV == 'test' && process.env.GITHUB_USERNAME && process.env.GITHUB_PASSWORD) {
+  if (process.env.GITHUB_USERNAME && process.env.GITHUB_PASSWORD) {
     return callback(null, {
       username: process.env.GITHUB_USERNAME,
       password: process.env.GITHUB_PASSWORD

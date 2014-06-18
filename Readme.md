@@ -31,3 +31,7 @@ Gotchas:
 I found this behavior helpful, because when I clone an existing directory into a new example, 
 it makes me sure I will not overwrite an existing plunk. 
 
+For Developers:
+- It can run without questions if GITHUB_USERNAME and GITHUB_PASSWORD environment variables exist
+- STDOUT gets a link to new/updated plunk,
+- STDERR is for errors 

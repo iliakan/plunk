@@ -1,0 +1,28 @@
+var request = require('request');
+var debug = require('debug')('utils:requestJson');
+var ApiError = require('error').ApiError;
+
+exports.get = makeMethod('get');
+exports.post = makeMethod('post');
+exports.del = makeMethod('del');
+exports.put = makeMethod('put');
+
+function makeMethod(method) {
+
+  return function(options, callback) {
+
+    if (typeof options != 'object') {
+      options = {url:options}
+    }
+
+    if (!options.headers) options.headers = {};
+    if (!options.headers['User-Agent']) options.headers['User-Agent'] = 'Plunk-App (https://github.com/iliakan/plunk.git)';
+    if (!options.headers['Content-Type']) options.headers['Content-Type'] = 'application/json;charset=UTF-8';
+    if (!options.json) options.json = true;
+
+    return request[method](options, function(error, response, body) {
+      console.log(method, options, error, response.statusCode, body);
+      callback(error, response, body);
+    });
+  }
+}

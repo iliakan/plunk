@@ -1,0 +1,12 @@
+{
+  "name": "plunk",
+  "version": "0.0.1",
+  "description": "Submit to plnkr.co",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_PATH=. node index",
+    "test": "NODE_PATH=. mocha"
+  },
+  "author": "Ilya Kantor <iliakan@gmail.com> (http://javascript.ru/)",
+  "license": "ISC"
+}

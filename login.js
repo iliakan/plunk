@@ -18,6 +18,7 @@ function readCredentials(callback) {
 
   async.series({
       username: function(callback) {
+        process.stdout.write('Hi there! We need to establish an auth session with plunker first (only one time).\n1) Log in (sign up if needed) to http://github.com, please.\n2) And then go to http://plnkr.co and log in using GitHub.\n3) And finally enter GitHub login/password here (will not give anyone, will not store anywhere).\n');
         readLine({message: 'GitHub Login: '}, callback);
       },
       password: function(callback) {

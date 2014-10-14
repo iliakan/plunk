@@ -1,6 +1,6 @@
 {
   "name": "plunk",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Utility to submit current directory to plnkr.co",
   "maintainers": [{
     "name": "Ilya Kantor",
@@ -20,7 +20,7 @@
     "nconf": "*",
     "winston": "*"
   },
-
+  "preferGlobal": true,
   "bin": {
     "plunk" : "bin/plunk"
   },

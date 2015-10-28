@@ -21,9 +21,10 @@ if (!plunkContent) {
 
 function ensureAuth(callback) {
   var auth = config.get('auth');
-  if (auth) return callback(null, auth);
-
-  login(callback);
+  if (auth && auth.id) return callback(null, auth);
+  else callback(
+    new Error('must have auth id in ~/.plunk_config.json like {"auth": { "id": "56224aba860e901300869189" }}')
+  );
 }
 
 function createApi(auth, callback) {

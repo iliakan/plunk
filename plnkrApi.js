@@ -25,9 +25,9 @@ function Api(auth) {
 
     var url = getUrl();
 
-    requestJson.post({ url: url, body: JSON.stringify(form) }, function(error, response, plunk) {
+    requestJson.post({ url: url, body: form }, function(error, response, plunk) {
       if (response.statusCode != 201) {
-        return callback(new ApiError("createPlunk " + id +": " + response.statusCode));
+        return callback(new ApiError("createPlunk: " + response.statusCode));
       }
 
       callback(null, plunk);
@@ -38,7 +38,7 @@ function Api(auth) {
 
     var url = getUrl(id);
 
-    requestJson.post({ url: url, body: JSON.stringify(form) }, function(error, response, plunk) {
+    requestJson.post({ url: url, body: form }, function(error, response, plunk) {
       if (response.statusCode != 200) {
         return callback(new ApiError("updatePlunk " + id +": " + response.statusCode));
       }

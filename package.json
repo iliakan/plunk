@@ -1,6 +1,6 @@
 {
   "name": "plunk",
-  "version": "0.1.9",
+  "version": "0.2",
   "description": "Utility to submit current directory to plnkr.co",
   "maintainers": [{
     "name": "Ilya Kantor",

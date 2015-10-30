@@ -6,22 +6,8 @@ function readPlunkContent(dir) {
 
   files = fs.readdirSync(dir);
 
-  var hadErrors = false;
   files = files.filter(function(file) {
     if (file[0] == ".") return false;
-
-    var filePath = path.join(dir, file);
-    if (fs.statSync(filePath).isDirectory()) {
-      hadErrors = true;
-      console.error("Directory not allowed: " + file);
-      return false;
-    }
-
-    var type = mime.lookup(file).split('/');
-    if (type[0] != 'text' && type[1] != 'json' && type[1] != 'javascript') {
-      hadErrors = true;
-      console.error("Bad file extension: " + file);
-    }
 
     return true;
   });
@@ -40,12 +26,22 @@ function readPlunkContent(dir) {
   }
 
 
-  if (hadErrors) {
-    return false;
-  }
-
   var filesForPlunk = {};
   files.forEach(function(file) {
+
+    var filePath = path.join(dir, file);
+    if (fs.statSync(filePath).isDirectory()) {
+      console.error("WARNING: skipped directory: " + file);
+      return;
+    }
+
+    var type = mime.lookup(file).split('/');
+    if (type[0] != 'text' && type[1] != 'json' && type[1] != 'javascript') {
+      console.error("WARNING: skipped unknown file extension: " + file);
+      return;
+    }
+
+
     filesForPlunk[file] = {
       filename: file,
       content: fs.readFileSync(path.join(dir, file), 'utf-8')

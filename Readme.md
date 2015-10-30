@@ -1,10 +1,11 @@
 A small utility to post current directory contents to http://plnkr.co/edit
 
 Before usage, please:
-- Log in (sign up if needed) to http://github.com, and then
-- Log in to http://plnkr.co using github
+1. Log in to plnkr.co
+2. In browser console at plnkr run: `document.cookie.match(/plnk_session=(\w+)/)[1]`
+3. Create `~/.plunk_config.json` with the condent { "auth": { "id": "..." } }, where `...` means the output of step 2.
 
-This will establish a session which the utility will use to create and update plunks under your github username.
+This will establish a session which the utility will use to create and update plunks under your username.
 
 Usage (while in target directory):
 ```
@@ -15,9 +16,6 @@ Usage (with explicit directory)
 ```
 plunk path/to/dir
 ```
-
-At first run it will ask github credentials and then store the plunker authentication in `~/.plunk_config.json`. 
-It does not store login/password. Remove the file if you ever want to relogin.
 
 Exclusions:
 - Ignores files starting with a dot `'.'`
@@ -31,7 +29,3 @@ Gotchas:
 I found this behavior helpful, because when I clone an existing directory into a new example, 
 it makes me sure I will not overwrite an existing plunk. 
 
-For Developers:
-- It can run without questions if GITHUB_USERNAME and GITHUB_PASSWORD environment variables exist
-- STDOUT outputs a link to new/updated plunk
-- STDERR is for errors if any 

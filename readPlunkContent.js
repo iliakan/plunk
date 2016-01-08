@@ -36,7 +36,7 @@ function readPlunkContent(dir) {
     }
 
     var type = mime.lookup(file).split('/');
-    if (type[0] != 'text' && type[1] != 'json' && type[1] != 'javascript') {
+    if (type[0] != 'text' && type[1] != 'json' && type[1] != 'javascript' && type[1] != 'mp2t') {
       console.error("WARNING: skipped unknown file extension: " + file);
       return;
     }

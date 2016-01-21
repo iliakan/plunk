@@ -1,6 +1,6 @@
 A tiny utility to post current directory contents to http://plnkr.co/edit
 
-Before usage, you need to establish a session at plnkr:
+Before use:
 
 1. Log in to http://plnkr.co
 2. In browser console run: `document.cookie.match(/plnk_session=(\w+)/)[1]`

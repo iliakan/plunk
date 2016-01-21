@@ -10,7 +10,6 @@ This will establish a session which the utility will use to create and update pl
 
 An example of `.plunk_config.json`:
 ```
-iliakan> cat ~/.plunk_config.json
 {
 "auth": { "id": "56224aba860eabcdef869189" }
 }

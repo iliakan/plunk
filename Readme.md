@@ -8,6 +8,14 @@ Before use:
 
 This will establish a session which the utility will use to create and update plunks under your username.
 
+An example of `.plunk_config.json`:
+```
+iliakan> cat ~/.plunk_config.json
+{
+"auth": { "id": "56224aba860eabcdef869189" }
+}
+```
+
 Usage (while in target directory):
 ```
 plunk 

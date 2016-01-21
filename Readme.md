@@ -1,6 +1,7 @@
-A small utility to post current directory contents to http://plnkr.co/edit
+A tiny utility to post current directory contents to http://plnkr.co/edit
 
 Before usage, please:
+
 1. Log in to plnkr.co
 2. In browser console at plnkr run: `document.cookie.match(/plnk_session=(\w+)/)[1]`
 3. Create `~/.plunk_config.json` with the condent { "auth": { "id": "..." } }, where `...` means the output of step 2.

@@ -21,7 +21,9 @@ function makeMethod(method) {
     if (!options.json) options.json = true;
 
     return request[method](options, function(error, response, body) {
-      log.debug(method, options, error, response.statusCode, body);
+      if (body.invalid)
+        log.debug(body.invalid)
+
       callback(error, response, body);
     });
   }

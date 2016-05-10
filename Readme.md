@@ -15,25 +15,21 @@ An example of `.plunk_config.json`:
 }
 ```
 
-Usage (while in target directory):
+Usage
 ```
-plunk 
+plunk --dir path/to/dir --des "A string describing the plunk" --tags "comma,separated,tags"
 ```
-
-Usage (with explicit directory)
-```
-plunk path/to/dir
-```
+This will upload all files in `path/to/dir` recursively, with the given description and tags.
+> Note: if you do not specify `--dir`, it will use the current working directory.
 
 Exclusions:
 - Ignores files starting with a dot `'.'`
-- Doesn't allow subdirectories
 - Doesn't allow files with MIME other than `text/*` or `*/json` or `*/javascript` (.html .js .css are fine)
 
 Gotchas:
 
 - Saves current plunk metadata in the file `.plunk`, uses it to update the plunk properly
-- A once-created plunk is bound to current directory name. When you copy it into a new directory (or rename), `plunk` will create a brand-new plunk. 
-I found this behavior helpful, because when I clone an existing directory into a new example, 
-it makes me sure I will not overwrite an existing plunk. 
-
+- A once-created plunk is bound to current directory name. When you copy it into a new directory (or rename), `plunk` will create a brand-new plunk.
+I found this behavior helpful, because when I clone an existing directory into a new example,
+it makes me sure I will not overwrite an existing plunk.
+- The `--tags` flag only works when creating a new plunk, not updating an existing one

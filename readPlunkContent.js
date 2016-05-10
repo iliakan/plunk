@@ -4,7 +4,6 @@ var mime = require('mime');
 var walkSync = require('./utils/walkSync');
 
 function readPlunkContent(dir) {
-  console.log(dir)
   var parentDir = dir + '/';
 
   var files = walkSync(parentDir, dir, []);

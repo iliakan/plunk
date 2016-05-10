@@ -18,7 +18,8 @@
     "lodash": "*",
     "mime": "*",
     "nconf": "*",
-    "winston": "*"
+    "winston": "*",
+    "yargs": "*"
   },
   "preferGlobal": true,
   "bin": {

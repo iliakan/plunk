@@ -7,8 +7,11 @@ var PlnkrApi = require('../plnkrApi').PlnkrApi;
 var readPlunkContent = require('../readPlunkContent');
 var writePlunk = require('../writePlunk');
 var _ = require('lodash');
+var argv = require('yargs').argv;
 
-var dir = process.argv[2] || process.cwd();
+var dir = argv.dir || process.cwd(),
+    description = argv.des,
+    tags = argv.tags ? argv.tags.split(',') : undefined;
 
 var plunkContent = readPlunkContent(dir);
 
@@ -48,8 +51,8 @@ function populateOldPlunk(callback) {
 function createPlunk(callback) {
 
   var form = {
-    description: '',
-    tags: [],
+    description: description || '',
+    tags: tags || [],
     files: _.cloneDeep(plunkContent.files),
     private: true
   };
@@ -61,7 +64,7 @@ function createPlunk(callback) {
 function updatePlunk(callback) {
 
   var form = {
-    description: '',
+    description: description || '',
     tags: {},
     files: _.cloneDeep(plunkContent.files)
   };
@@ -92,9 +95,5 @@ async.waterfall([
   _.partial(writePlunk, dir)
 ], function(err, plunk) {
   if (err) console.error(err);
-  else console.log("http://plnkr.co/edit/" + plunk.id);
+  else console.log("Plunk URL: http://plnkr.co/edit/" + plunk.id);
 });
-
-
-
-

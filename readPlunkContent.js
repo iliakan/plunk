@@ -1,10 +1,12 @@
 var fs = require('fs');
 var path = require('path');
 var mime = require('mime');
+var walkSync = require('./utils/walkSync');
 
 function readPlunkContent(dir) {
+  var parentDir = dir + '/';
 
-  files = fs.readdirSync(dir);
+  var files = walkSync(parentDir, dir, []);
 
   files = files.filter(function(file) {
     if (file[0] == ".") return false;
@@ -30,10 +32,6 @@ function readPlunkContent(dir) {
   files.forEach(function(file) {
 
     var filePath = path.join(dir, file);
-    if (fs.statSync(filePath).isDirectory()) {
-      console.error("WARNING: skipped directory: " + file);
-      return;
-    }
 
     var type = mime.lookup(file).split('/');
     if (type[0] != 'text' && type[1] != 'json' && type[1] != 'javascript' && type[1] != 'mp2t') {
@@ -41,13 +39,11 @@ function readPlunkContent(dir) {
       return;
     }
 
-
     filesForPlunk[file] = {
       filename: file,
       content: fs.readFileSync(path.join(dir, file), 'utf-8')
     };
   });
-
 
   return {
     plunk: plunk,

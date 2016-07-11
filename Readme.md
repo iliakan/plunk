@@ -2,7 +2,7 @@ A tiny utility to post current directory contents to http://plnkr.co/edit
 
 Before use:
 
-1. Log in to http://plnkr.co
+1. Sign in to http://plnkr.co with Github (button in the right-upper corner of <http://plnkr.co/>)
 2. In browser developer console run: `document.cookie.match(/plnk_session=(\w+)/)[1]`
 3. Create `~/.plunk_config.json` with the content `{ "auth": { "id": "..." } }`, where `...` means the output of step 2.
 
@@ -11,7 +11,7 @@ This will establish a session which the utility will use to create and update pl
 An example of `.plunk_config.json`:
 ```
 {
-"auth": { "id": "56224aba860eabcdef869189" }
+  "auth": { "id": "56224aba860eabcdef869189" }
 }
 ```
 

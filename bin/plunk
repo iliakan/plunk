@@ -1,99 +1,41 @@
 #! /usr/bin/env node
 
-var login = require('../login');
-var config = require('../config');
-var async = require('async');
-var PlnkrApi = require('../plnkrApi').PlnkrApi;
-var readPlunkContent = require('../readPlunkContent');
-var writePlunk = require('../writePlunk');
-var _ = require('lodash');
-var argv = require('yargs').argv;
+const updateDir = require('../lib/updateDir');
+const config = require('../config');
+const co = require('co');
+const chalk = require('chalk');
 
-var dir = argv.dir || process.cwd(),
-    description = argv.des,
-    tags = argv.tags ? argv.tags.split(',') : undefined;
+// --dir /my/dir
+// --desc "My plunk"
+// --tags tag1,tag
+// --auth.id abcdef
 
-var plunkContent = readPlunkContent(dir);
+const dir = config.get('dir') || process.cwd(),
+    description = config.get('desc'),
+    tags = config.get('tags') ? config.get('tags').split(',') : undefined;
 
-var api;
+co(function*() {
 
-if (!plunkContent) {
-  console.error("Exiting...");
-  process.exit(0);
-}
+  let plunkContent = yield* updateDir({
+    auth: config.get('auth'),
+    dir,
+    description,
+    tags
+  });
 
-function ensureAuth(callback) {
-  var auth = config.get('auth');
-  if (auth && auth.id) return callback(null, auth);
-  else callback(
-    new Error('must have auth id in ~/.plunk_config.json like {"auth": { "id": "56224aba860e901300869189" }}')
-  );
-}
+  // console.log(plunkContent);
+  console.log("http://plnkr.co/edit/" + plunkContent.plunk.id + "?p=preview");
 
-function createApi(auth, callback) {
-  api = new PlnkrApi(auth);
-  callback(null);
-}
-
-function populateOldPlunk(callback) {
-  if (plunkContent.plunk.id) {
-    api.getPlunk(plunkContent.plunk.id, function(error, plunk) {
-      if (error) return callback(error);
-      plunkContent.plunk = plunk || {};
-      callback(null);
-    });
+}).catch(function(err) {
+  if (err.name == 'PlunkError') {
+    console.error(chalk.red("Error: " + err.message));
   } else {
-    callback(null);
+    console.error(err.stack);
   }
-}
-
-
-function createPlunk(callback) {
-
-  var form = {
-    description: description || '',
-    tags: tags || [],
-    files: _.cloneDeep(plunkContent.files),
-    private: true
-  };
-
-  api.createPlunk(form, callback);
-}
-
-
-function updatePlunk(callback) {
-
-  var form = {
-    description: description || '',
-    tags: {},
-    files: _.cloneDeep(plunkContent.files)
-  };
-
-  // explicitly fileName:null for all removed files
-  for(var file in plunkContent.plunk.files) {
-    if (!form.files[file]) {
-      form.files[file] = null;
-    }
-  }
-
-  api.updatePlunk(plunkContent.plunk.id, form, callback);
-
-}
-
-
-async.waterfall([
-  ensureAuth,
-  createApi,
-  populateOldPlunk,
-  function(callback) {
-    if (plunkContent.plunk.id) {
-      updatePlunk(callback);
-    } else {
-      createPlunk(callback);
-    }
-  },
-  _.partial(writePlunk, dir)
-], function(err, plunk) {
-  if (err) console.error(err);
-  else console.log("Plunk URL: http://plnkr.co/edit/" + plunk.id);
+  process.exitCode = 1;
 });
+
+
+
+
+

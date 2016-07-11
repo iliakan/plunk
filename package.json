@@ -1,7 +1,7 @@
 {
   "name": "plunk",
-  "version": "0.4.0",
-  "description": "Utility to submit current directory to plnkr.co",
+  "version": "0.5.0",
+  "description": "Utility to submit a directory to plnkr.co",
   "maintainers": [{
     "name": "Ilya Kantor",
     "email": "iliakan@gmail.com",
@@ -12,14 +12,15 @@
     "url": "https://github.com/iliakan/plunk.git"
   },
   "dependencies": {
-    "async": "*",
     "home-dir": "*",
-    "request": "*",
+    "request-promise": "*",
     "lodash": "*",
     "mime": "*",
     "nconf": "*",
     "winston": "*",
-    "yargs": "*"
+    "yargs": "*",
+    "glob": "*",
+    "co": "*"
   },
   "preferGlobal": true,
   "bin": {
@@ -27,6 +28,8 @@
   },
   "devDependencies": {
     "mocha": "*",
+    "co-mocha": "*",
+    "fs-extra": "*",
     "should": "*"
   },
   "main": "index.js",

@@ -1,16 +1,13 @@
-var nconf = require('nconf');
-var fs = require('fs');
-var homeDir = require('home-dir')();
-var path = require('path');
+'use strict';
 
-var configFile = path.join(homeDir, '.plunk_config.json');
+const path = require('path');
+const nconf = require('nconf');
+const homeDir = require('home-dir')();
 
-if (!fs.existsSync(configFile)) {
-  fs.writeFileSync(configFile, "{}");
-}
+nconf
+  .argv() // take args first
+  .env() // then env vars
+  .use('file', { file: path.join(homeDir, '.plunk_config.json') }); // then read from file
 
-nconf.argv()
-  .env()
-  .use('file', { file: configFile });
 
 module.exports = nconf;

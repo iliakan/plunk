@@ -1,6 +1,6 @@
 {
   "name": "plunk",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Utility to submit a directory to plnkr.co",
   "maintainers": [{
     "name": "Ilya Kantor",
@@ -14,6 +14,7 @@
   "dependencies": {
     "home-dir": "*",
     "request-promise": "*",
+    "request": "*",
     "lodash": "*",
     "mime": "*",
     "nconf": "*",

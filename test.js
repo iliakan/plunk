@@ -32,7 +32,7 @@ describe("API (Anonymous)", function() {
 
     plunkContent.plunk.id.should.exist;
 
-    // fs.removeSync(dir);
+    fs.removeSync(dir);
   });
 
 });

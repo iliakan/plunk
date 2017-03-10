@@ -36,3 +36,4 @@ An example of `~/.plunk_config.json`:
 - A once-created plunk is bound to its directory name. When you copy it into a new directory (or rename), `plunk` will create a brand-new plunk.
 I found this behavior helpful, because when I clone an existing directory into a new example, it makes me sure I will not overwrite an existing plunk.
 - The `--tags` flag only works when creating a new plunk, not updating an existing one.
+- You should create .plunk_config.json in your home-dir, for details see https://www.npmjs.com/package/home-dir

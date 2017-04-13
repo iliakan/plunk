@@ -11,3 +11,5 @@ nconf
 
 
 module.exports = nconf;
+
+console.log(`Your home dir is ${homeDir}. Make sure .plunk-config.json file is in it.`);

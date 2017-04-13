@@ -13,17 +13,18 @@ describe("API (Anonymous)", function() {
 
   it("creates a plunk", function*() {
 
-    let dir = fs.mkdtempSync('/tmp/plunk-');
+    let dir = fs.mkdtempSync('plunk-');
 
+    let nestedPath = path.join('nested','dir', 'file.txt');
     let files = {
         'my.js': 'let a = 5;',
         'something': 'some thing',
-        'nested/dir/file.txt': 'txt'
+        nestedPath: 'txt'
     };
 
     for(let filePath in files) {
-      fs.ensureDirSync(path.dirname(`${dir}/${filePath}`));
-      fs.writeFileSync(`${dir}/${filePath}`, files[filePath]);
+      fs.ensureDirSync(path.dirname(path.join(`${dir}`,`${filePath}`)));
+      fs.writeFileSync(path.join(`${dir}`,`${filePath}`), files[filePath]);
     }
 
     let plunkContent = yield* updateDir({

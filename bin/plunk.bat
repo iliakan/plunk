@@ -1,6 +1,4 @@
 @ECHO OFF
-SET desc=""
-SET tags=""
 SET dir=%cd%
 cd /d %~dp0
 
@@ -18,12 +16,36 @@ IF NOT "%1"=="" (
         SET tags=%2
         SHIFT
     )
+    IF "%1"=="--glob" (
+        SET glob="%2"
+        SHIFT
+    )
     SHIFT
     GOTO :loop
 )
 
-ECHO Executing... $ node plunk --dir %dir% --desc %desc% --tags %tags%
-node plunk --dir %dir% --desc %desc% --tags %tags%
+IF NOT DEFINED desc (
+	set desc=
+) ELSE (
+	set desc=--desc %desc%
+)
+
+IF NOT DEFINED tags (
+	set tags=
+) ELSE (
+	set tags=--tags %tags%
+)
+
+IF NOT DEFINED glob (
+	set glob=
+) ELSE (
+	set glob=--glob %glob%
+)
+
+
+ECHO Executing... $ node plunk --dir %dir% %desc% %tags% %glob%
+node plunk --dir %dir% %desc% %tags% %glob%
+
 goto :eof
 
 :joinpath

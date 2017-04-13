@@ -6,7 +6,8 @@ A tiny utility to post current directory contents to http://plnkr.co/edit
 1. Go the the dir you want to plunk.
 2. Run `plunk`
 
-Or `plunk --dir path/to/dir --desc "A string describing the plunk" --tags "comma,separated,tags"`.
+Or `plunk --dir path/to/dir --desc "A string describing the plunk" --tags "comma,separated,tags" --glob "pattern"`.
+Specify default parameters in `defaults.json`.
 
 To run on Windows, use `plunk.bat` instead of `plunk`.
 

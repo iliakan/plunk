@@ -7,8 +7,8 @@ const homeDir = require('home-dir')();
 nconf
   .argv() // take args first
   .env() // then env vars
-  .use('file', { file: path.join(homeDir, '.plunk_config.json') }) // then read from file
-  .use('file', { file: path.join(__dirname, 'defaults.json') });
+  .file('user', { file: path.join(homeDir, '.plunk_config.json') }) // then read from file
+  .file('defaults', { file: path.join(__dirname, 'defaults.json') });
 
 
 module.exports = nconf;

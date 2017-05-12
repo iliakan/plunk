@@ -1,5 +1,5 @@
 {
   "desc": "",
   "tags": "",
-  "glob": "**!(node_modules)"
+  "glob": "**/*"
 }

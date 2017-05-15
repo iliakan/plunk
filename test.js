@@ -10,20 +10,19 @@ const updateDir = require('./lib/updateDir');
 // anonymous test
 
 describe("API (Anonymous)", function() {
-
   it("creates a plunk", function*() {
+    let dir = fs.mkdtempSync('plunk-');
 
-    let dir = fs.mkdtempSync('/tmp/plunk-');
-
+    let nestedPath = path.join('nested', 'dir', 'file.txt');
     let files = {
         'my.js': 'let a = 5;',
         'something': 'some thing',
-        'nested/dir/file.txt': 'txt'
+        [nestedPath]: 'txt'
     };
 
     for(let filePath in files) {
-      fs.ensureDirSync(path.dirname(`${dir}/${filePath}`));
-      fs.writeFileSync(`${dir}/${filePath}`, files[filePath]);
+      fs.ensureDirSync(path.dirname(path.join(`${dir}`,`${filePath}`)));
+      fs.writeFileSync(path.join(`${dir}`,`${filePath}`), files[filePath]);
     }
 
     let plunkContent = yield* updateDir({
@@ -31,6 +30,32 @@ describe("API (Anonymous)", function() {
     });
 
     plunkContent.plunk.id.should.exist;
+
+    fs.removeSync(dir);
+  });
+
+  it("uses glob to ignore images properly", function*() {
+    let dir = fs.mkdtempSync('plunk-');
+    let glob = "**/*(!(*.png|*.jpg))";
+
+    let nestedPath = path.join('nedsted', 'dir', 'file.jpg');
+    let files = {
+      'toIgnore.png': 'some image',
+      [nestedPath]: 'some image',
+      'something': 'something else'
+    };
+
+    for(let filePath in files) {
+      fs.ensureDirSync(path.dirname(path.join(`${dir}`,`${filePath}`)));
+      fs.writeFileSync(path.join(`${dir}`,`${filePath}`), files[filePath]);
+    }
+
+    let plunkContent = yield* updateDir({
+      dir,
+      glob
+    });
+
+    Object.keys(plunkContent.plunk.files).should.eql(['something']);
 
     fs.removeSync(dir);
   });

@@ -12,15 +12,18 @@ const chalk = require('chalk');
 
 const dir = config.get('dir') || process.cwd(),
     description = config.get('desc'),
-    tags = config.get('tags') ? config.get('tags').split(',') : undefined;
+    tags = config.get('tags') ? config.get('tags').split(',') : undefined,
+    glob = config.get('glob'),
+    auth = config.get('auth');
 
 co(function*() {
 
   let plunkContent = yield* updateDir({
-    auth: config.get('auth'),
+    auth,
     dir,
     description,
-    tags
+    tags,
+    glob
   });
 
   // console.log(plunkContent);

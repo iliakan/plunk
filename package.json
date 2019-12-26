@@ -21,6 +21,7 @@
     "mime": "*",
     "nconf": "*",
     "winston": "^2",
+    "chalk": "*",
     "yargs": "*",
     "glob": "*",
     "co": "*"

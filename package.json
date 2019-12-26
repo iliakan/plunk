@@ -2,11 +2,13 @@
   "name": "plunk",
   "version": "0.5.1",
   "description": "Utility to submit a directory to plnkr.co",
-  "maintainers": [{
-    "name": "Ilya Kantor",
-    "email": "iliakan@gmail.com",
-    "web": "http://javascript.ru"
-  }],
+  "maintainers": [
+    {
+      "name": "Ilya Kantor",
+      "email": "iliakan@gmail.com",
+      "web": "http://javascript.ru"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/iliakan/plunk.git"
@@ -18,14 +20,14 @@
     "lodash": "*",
     "mime": "*",
     "nconf": "*",
-    "winston": "*",
+    "winston": "^2",
     "yargs": "*",
     "glob": "*",
     "co": "*"
   },
   "preferGlobal": true,
   "bin": {
-    "plunk" : "bin/plunk"
+    "plunk": "bin/plunk"
   },
   "devDependencies": {
     "mocha": "*",

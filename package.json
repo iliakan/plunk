@@ -1,6 +1,6 @@
 {
   "name": "plunk",
-  "version": "0.5.1",
+  "version": "0.6",
   "description": "Utility to submit a directory to plnkr.co",
   "maintainers": [
     {

@@ -20,7 +20,7 @@
     "lodash": "*",
     "mime": "*",
     "nconf": "*",
-    "winston": "^2",
+    "winston": "^3.0.0",
     "chalk": "*",
     "yargs": "*",
     "glob": "*",

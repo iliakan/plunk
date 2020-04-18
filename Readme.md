@@ -2,7 +2,7 @@ A tiny utility to post current directory contents to http://plnkr.co/edit
 
 ## Anonymous Usage
 
-1. Go the the dir you want to plunk.
+1. Go to the dir you want to plunk.
 2. Run `plunk`
 
 Or `plunk --dir path/to/dir --desc "A string describing the plunk" --tags "comma,separated,tags"`.
